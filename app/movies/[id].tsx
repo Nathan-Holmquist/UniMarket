@@ -1,11 +1,11 @@
 import {View, Text} from 'react-native'
 import React from 'react'
 
-const Messages = () => {
+const Id = () => {
     return (
         <View>
-            <Text>Messages</Text>
+            <Text>Id</Text>
         </View>
     )
 }
-export default Messages
+export default Id

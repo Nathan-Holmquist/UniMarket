@@ -1,6 +1,11 @@
-// import SellForm from '../../components/SellForm';
-import { Text } from 'react-native';
+import {View, Text} from 'react-native'
+import React from 'react'
 
-export default function Sell() {
-    return <View></View>;
+const Sell = () => {
+    return (
+        <View>
+            <Text>Sell</Text>
+        </View>
+    )
 }
+export default Sell

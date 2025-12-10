@@ -23,6 +23,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -32,14 +33,18 @@
     "javascript.preferred.runtime.type.id": "node",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "/Users/nathan/WebstormProjects/react-native-app/src/main.js",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "/Users/nathan/WebstormProjects/react-native-app/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/assets/icons" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/app/(tabs)" />
+      <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/app/movie" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -56,7 +61,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1765238753953</updated>
-      <workItem from="1765238754966" duration="7852000" />
+      <workItem from="1765238754966" duration="23354000" />
     </task>
     <servers />
   </component>
