@@ -4,8 +4,17 @@ import {Link} from "expo-router";
 
 export default function Index(){
     return (
-        <View className="flex-1 justify-center items-center">
-            <Text className= "text-5xl text-dark-200 font-bold"> Welcome </Text>
+        <View className="flex-1 items-center pt-20 bg-dark-100">
+            <View className="w-full py-6  items-start">
+                <Text className= "text-5xl font-bold">
+                    <Text className = "text-blue-500">Campus</Text>
+                    <Text className = "text-red-500">Mart</Text>
+                </Text>
+            </View>
+
+            <View>
+
+            </View>
         </View>
     )
 }

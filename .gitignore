@@ -4,5 +4,12 @@
 
 expo-env.d.ts
 .expo/
+# Node modules
+node_modules/
+# IDE / editor
+.idea/
+.vscode/
+*.DS_Store
+
 
 # @end expo-cli
