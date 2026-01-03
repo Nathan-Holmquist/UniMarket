@@ -19,10 +19,10 @@ interface TabIconProps {
 const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
 
     const tint = title === "Sell"
-        ? "black"
+        ? "white"
         : focused
-            ? "#151321"
-            : "white";
+            ? "white"
+            : "grey";
 
     return (
         <ImageBackground className="flex-1 flex-col items-center justify-center rounded-full mt-2 min-w-[112px] min-h-14">
@@ -31,7 +31,7 @@ const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
                 tintColor={tint}
                 className="size-5"
             />
-            <Text>{title}</Text>
+            {/*<Text>{title}</Text>*/}
         </ImageBackground>
     );
 
@@ -50,7 +50,7 @@ const _Layout = () => {
                     alignItems:'center'
                 },
                 tabBarStyle: {
-                    backgroundColor: 'lightgray',
+                    backgroundColor: '#202022',
                     borderColor: '#0f0D23',
                 }
             }
@@ -136,7 +136,7 @@ const _Layout = () => {
                 name="profile"
                 options={{
                     headerShown: false,
-                    title: 'Prrofile',
+                    title: 'Profile',
                     tabBarActiveTintColor: 'black',
                     tabBarInactiveTintColor: 'black',
                     tabBarIcon: ({ focused }) => (
