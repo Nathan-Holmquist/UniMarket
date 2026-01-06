@@ -23,7 +23,7 @@ export default function Login() {
                     <Text className="text-gray-600 mb-8 text-center">Sign in to continue</Text>
 
                     <View className="mb-4">
-                        <Text className="text-gray-700 font-medium mb-2">Username or Email</Text>
+                        <Text className="text-gray-700 font-bold mb-2">Username or Email</Text>
                         <TextInput
                             className="bg-white border border-gray-300 rounded-lg px-4 py-3 text-base"
                             placeholder="Enter your username or email"
@@ -35,7 +35,7 @@ export default function Login() {
                     </View>
 
                     <View className="mb-6">
-                        <Text className="text-gray-700 font-medium mb-2">Password</Text>
+                        <Text className="text-gray-700 font-bold mb-2">Password</Text>
                         <TextInput
                             className="bg-white border border-gray-300 rounded-lg px-4 py-3 text-base"
                             placeholder="Enter your password"

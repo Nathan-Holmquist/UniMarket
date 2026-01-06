@@ -22,11 +22,11 @@ export default function Signup() {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             className="flex-1"
         >
-            <ScrollView className="flex-1 bg-gray-50 pt-6">
+            <ScrollView className="flex-1 bg-gray-50 pt-3"
+                        keyboardDismissMode="on-drag">
                 <View className="p-6 pt-12">
-                    <View className="w-full max-w-md mx-auto">
-                        <Text className="text-4xl font-bold mb-2 text-gray-900 text-center">Create Account</Text>
-                        <Text className="text-gray-600 mb-8 text-center">Sign up to get started</Text>
+                    <View className="w-full max-w-md mx-auto ">
+                        <Text className="text-4xl font-bold mb-2 text-gray-900 text-center">Sign up to get started</Text>
 
                         <View className="mb-4">
                             <Text className="text-gray-700 font-bold mb-2 ">First Name</Text>
