@@ -145,7 +145,7 @@ export default function Signup() {
                             <Text className="text-gray-700 font-bold mb-2">Email</Text>
                             <TextInput
                                 className="bg-white border border-gray-300 rounded-lg px-4 py-3 text-base"
-                                placeholder="Enter your email"
+                                placeholder="Enter your school email (.edu)"
                                 value={email}
                                 onChangeText={setEmail}
                                 autoCapitalize="none"

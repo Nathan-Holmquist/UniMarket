@@ -3,8 +3,10 @@ import React from 'react'
 
 const Messages = () => {
     return (
-        <View>
-            <Text>Messages</Text>
+        <View className = 'flex-1 pt-20 items-center'>
+            <View>
+                <Text className = 'text-5xl'>Messages</Text>
+            </View>
         </View>
     )
 }
