@@ -1,11 +1,12 @@
-import {View, Text} from 'react-native'
+import {View, Text, ActivityIndicator} from 'react-native'
 import React, {JSX} from 'react'
-import {Tabs} from "expo-router";
+import {Tabs, Redirect} from "expo-router";
 import {ImageBackground, Image} from "react-native";
 import {images} from "@/constants/images";
 import {icons} from "@/constants/icons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface TabIconProps {
     icon?: any,
@@ -39,6 +40,20 @@ const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
 
 
 const _Layout = () => {
+    const { user, loading } = useAuth()
+
+    if (loading) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#2563eb" />
+            </View>
+        )
+    }
+
+    if (!user) {
+        return <Redirect href="/login" />
+    }
+
     return (
         <Tabs
             screenOptions={{
