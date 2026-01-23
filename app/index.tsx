@@ -14,6 +14,7 @@ export default function Index() {
         )
     }
 
+
     // Redirect based on auth state
     if (user) {
         return <Redirect href="/(tabs)/home" />
