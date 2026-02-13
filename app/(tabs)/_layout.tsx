@@ -1,11 +1,7 @@
-import {View, Text, ActivityIndicator} from 'react-native'
+import {View, ActivityIndicator,ImageBackground, Image} from 'react-native'
 import React, {JSX} from 'react'
 import {Tabs, Redirect} from "expo-router";
-import {ImageBackground, Image} from "react-native";
-import {images} from "@/constants/images";
 import {icons} from "@/constants/icons";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface TabIconProps {
@@ -20,10 +16,10 @@ interface TabIconProps {
 const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
 
     const tint = title === "Sell"
-        ? "white"
+        ? "black"
         : focused
-            ? "white"
-            : "grey";
+            ? "orange"
+            : "black";
 
     return (
         <ImageBackground className="flex-1 flex-col items-center justify-center rounded-full mt-2 min-w-[112px] min-h-14">
@@ -32,7 +28,7 @@ const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
                 tintColor={tint}
                 className="size-5"
             />
-            {/*<Text>{title}</Text>*/}
+
         </ImageBackground>
     );
 
@@ -65,7 +61,7 @@ const _Layout = () => {
                     alignItems:'center'
                 },
                 tabBarStyle: {
-                    backgroundColor: '#202022',
+                    backgroundColor: '#c9fffb',
                     borderColor: '#0f0D23',
                 }
             }

@@ -8,7 +8,8 @@ import play from "@/assets/icons/play.png";
 import arrow from "@/assets/icons/arrow.png";
 import plus from "@/assets/icons/plus.png";
 import comment from "@/assets/icons/comment.png";
-
+import arrowBack from "@/assets/icons/arrowBack.png";
+import userDefault from "@/assets/icons/userDefault.png";
 export const icons = {
   home,
   search,
@@ -20,4 +21,6 @@ export const icons = {
   arrow,
   plus,
   comment,
+  arrowBack,
+  userDefault,
 };
