@@ -26,7 +26,7 @@ const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
             <Image
                 source={icon}
                 tintColor={tint}
-                className="size-5"
+                className="size-7"
             />
 
         </ImageBackground>
@@ -105,24 +105,24 @@ const _Layout = () => {
                 }}
             />
 
-            <Tabs.Screen
-                name="sell"
-                options={{
-                    headerShown: false,
-                    title: 'Sell',
-                    tabBarActiveTintColor: 'black',
-                    tabBarInactiveTintColor: 'black',
-                    tabBarIcon: ({ focused }) => (
-                        <>
-                            <TabIcon
-                                icon={icons.plus}
-                                focused={focused}
-                                title="Sell"
-                            />
-                        </>
-                    )
-                }}
-            />
+            {/*<Tabs.Screen*/}
+            {/*    name="sell"*/}
+            {/*    options={{*/}
+            {/*        headerShown: false,*/}
+            {/*        title: 'Sell',*/}
+            {/*        tabBarActiveTintColor: 'black',*/}
+            {/*        tabBarInactiveTintColor: 'black',*/}
+            {/*        tabBarIcon: ({ focused }) => (*/}
+            {/*            <>*/}
+            {/*                <TabIcon*/}
+            {/*                    icon={icons.plus}*/}
+            {/*                    focused={focused}*/}
+            {/*                    title="Sell"*/}
+            {/*                />*/}
+            {/*            </>*/}
+            {/*        )*/}
+            {/*    }}*/}
+            {/*/>*/}
 
             <Tabs.Screen
                 name="messages"

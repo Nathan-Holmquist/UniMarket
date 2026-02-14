@@ -10,6 +10,7 @@ import plus from "@/assets/icons/plus.png";
 import comment from "@/assets/icons/comment.png";
 import arrowBack from "@/assets/icons/arrowBack.png";
 import userDefault from "@/assets/icons/userDefault.png";
+import swapImage from "@/assets/icons/swapImage.png";
 export const icons = {
   home,
   search,
@@ -23,4 +24,5 @@ export const icons = {
   comment,
   arrowBack,
   userDefault,
+  swapImage,
 };
