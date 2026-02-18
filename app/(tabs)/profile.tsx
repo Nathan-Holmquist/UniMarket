@@ -12,7 +12,7 @@ const Profile = () => {
                 <Image source={icons.swapImage} className='absolute top-[255px] right-[135px] w-8 h-8'/>
                 <View>
                     <Pressable
-                        className="bg-blue-600 px-8 py-4 rounded-2xl"
+                        className="bg-blue-600 px-[20px] py-[20px] rounded-2xl p-10"
                         onPress={() => {
                             console.log('You tapped the button!');
                         }}>
