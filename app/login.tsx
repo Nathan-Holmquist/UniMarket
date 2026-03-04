@@ -1,11 +1,9 @@
 import { View, Text, Pressable, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
 
 export default function Login() {
     const router = useRouter()
-    const { login } = useAuth()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -26,7 +24,7 @@ export default function Login() {
 
         setLoading(true)
         try {
-            await login(email.trim(), password)
+            // await login(email.trim(), password)
             // Navigate to home after successful login
             router.replace('/(tabs)/home')
         } catch (error: any) {

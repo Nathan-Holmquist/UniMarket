@@ -1,11 +1,9 @@
 import { View, Text, Pressable, TextInput, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
 
 export default function Signup() {
     const router = useRouter()
-    const { signup } = useAuth()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [username, setUsername] = useState('')
@@ -60,15 +58,6 @@ export default function Signup() {
 
         setLoading(true)
         try {
-            await signup({
-                firstName: firstName.trim(),
-                lastName: lastName.trim(),
-                username: username.trim(),
-                email: email.trim(),
-                address: address.trim(),
-                password,
-            })
-            // Navigate to home after successful signup
             router.replace('/(tabs)/home')
         } catch (error: any) {
             console.error('Signup error:', error)

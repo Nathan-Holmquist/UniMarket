@@ -11,5 +11,5 @@ node_modules/
 .vscode/
 *.DS_Store
 .claude/
-
 # @end expo-cli
+UniMarketBackend/env

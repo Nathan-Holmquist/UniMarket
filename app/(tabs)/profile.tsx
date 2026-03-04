@@ -1,4 +1,4 @@
-import {View, Text, Pressable, StyleSheet, Image, Button} from 'react-native'
+import {View, Text, Pressable, StyleSheet, Image} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {router} from 'expo-router'
 import {icons} from "@/constants/icons";

@@ -1,8 +1,7 @@
-import {View, ActivityIndicator,ImageBackground, Image} from 'react-native'
+import {ImageBackground, Image} from 'react-native'
 import React, {JSX} from 'react'
-import {Tabs, Redirect} from "expo-router";
+import {Tabs} from "expo-router";
 import {icons} from "@/constants/icons";
-import { useAuth } from '@/contexts/AuthContext';
 
 interface TabIconProps {
     icon?: any,
@@ -36,19 +35,6 @@ const TabIcon = ({icon, vector, focused, title}: TabIconProps) => {
 
 
 const _Layout = () => {
-    const { user, loading } = useAuth()
-
-    if (loading) {
-        return (
-            <View className="flex-1 justify-center items-center">
-                <ActivityIndicator size="large" color="#2563eb" />
-            </View>
-        )
-    }
-
-    if (!user) {
-        return <Redirect href="/login" />
-    }
 
     return (
         <Tabs
@@ -104,25 +90,6 @@ const _Layout = () => {
                     )
                 }}
             />
-
-            {/*<Tabs.Screen*/}
-            {/*    name="sell"*/}
-            {/*    options={{*/}
-            {/*        headerShown: false,*/}
-            {/*        title: 'Sell',*/}
-            {/*        tabBarActiveTintColor: 'black',*/}
-            {/*        tabBarInactiveTintColor: 'black',*/}
-            {/*        tabBarIcon: ({ focused }) => (*/}
-            {/*            <>*/}
-            {/*                <TabIcon*/}
-            {/*                    icon={icons.plus}*/}
-            {/*                    focused={focused}*/}
-            {/*                    title="Sell"*/}
-            {/*                />*/}
-            {/*            </>*/}
-            {/*        )*/}
-            {/*    }}*/}
-            {/*/>*/}
 
             <Tabs.Screen
                 name="messages"
