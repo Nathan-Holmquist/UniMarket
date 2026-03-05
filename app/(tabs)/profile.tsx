@@ -1,7 +1,7 @@
-import {View, Text, Pressable, StyleSheet, Image} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {router} from 'expo-router'
-import {icons} from "@/constants/icons";
+import {icons} from "@/constants/icons"
 
 const Profile = () => {
     return (
@@ -11,33 +11,33 @@ const Profile = () => {
                 <Image source={icons.userDefault} style={styles.image}/>
                 <Image source={icons.swapImage} className='absolute top-[255px] right-[135px] w-8 h-8'/>
                 <View>
-                    <Pressable
+                    <TouchableOpacity
                         className="bg-blue-600 px-[20px] py-[20px] rounded-2xl p-10"
                         onPress={() => {
                             console.log('You tapped the button!');
                         }}>
                         <Text className="text-white font-semibold text-lg">Transaction History</Text>
-                    </Pressable>
-                    <Pressable
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         className="bg-blue-600 px-8 py-4 rounded-2xl"
                         onPress={() => {
                             console.log('You tapped the button!');
                         }}>
                         <Text className="text-white font-semibold text-lg">Saved Listing</Text>
-                    </Pressable>
-                    <Pressable
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         className="bg-blue-600 px-8 py-4 rounded-2xl"
                         onPress={() => {
                             console.log('You tapped the button!');
                         }}>
                         <Text className="text-white font-semibold text-lg">Settings</Text>
-                    </Pressable>
-                    <Pressable
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         onPress={() => router.push('/login')}
                         className="bg-blue-600 px-8 py-4 rounded-2xl"
                     >
                         <Text className="text-white font-semibold text-lg">Log Out</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     </View>
             </View>
         </SafeAreaProvider>

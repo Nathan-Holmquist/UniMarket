@@ -86,9 +86,9 @@ export default function Signup() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1"
+            className="flex-1 pt-10"
         >
-            <ScrollView className="flex-1 bg-gray-50 pt-3"
+            <ScrollView className="flex-1 pt-3"
                         keyboardDismissMode="on-drag">
                 <View className="p-6 pt-12">
                     <View className="w-full max-w-md mx-auto ">
