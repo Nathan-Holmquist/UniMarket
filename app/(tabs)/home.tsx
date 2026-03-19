@@ -7,13 +7,13 @@ const TILE_SIZE = (SCREEN_WIDTH - 48) / 2; // 16px padding on each side + 16px g
 
 const data = [
     { id: '1', name: 'MacBook Pro 2021', price: '$850', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '2', name: 'Nike Air Force 1', price: '$90', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '3', name: 'Calculus Textbook', price: '$30', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '4', name: 'Mini Fridge', price: '$60', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '5', name: 'Desk Lamp', price: '$25', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '6', name: 'Gaming Chair', price: '$120', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '7', name: 'Acoustic Guitar', price: '$200', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
-    { id: '8', name: 'Road Bike', price: '$350', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400' },
+    { id: '2', name: 'Nike Air Force 1', price: '$90', image: '' },
+    { id: '3', name: 'Calculus Textbook', price: '$30', image: '' },
+    { id: '4', name: 'Mini Fridge', price: '$60', image: '' },
+    { id: '5', name: 'Desk Lamp', price: '$25', image: '' },
+    { id: '6', name: 'Gaming Chair', price: '$120', image: '' },
+    { id: '7', name: 'Acoustic Guitar', price: '$200', image: '' },
+    { id: '8', name: 'Road Bike', price: '$350', image: '' },
 ];
 
 interface Listing {
@@ -64,6 +64,7 @@ export default function Home() {
                 <Pressable
                     className="p-1 active:opacity-60"
                     hitSlop={12}
+                    onPress={() => router.push('/create-listing')}
                 >
                     <Image
                         source={icons.plus}

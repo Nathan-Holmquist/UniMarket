@@ -1,59 +1,85 @@
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {router} from 'expo-router'
-import {icons} from "@/constants/icons"
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { router } from 'expo-router'
+import { icons } from "@/constants/icons"
+
+const NAVY = '#1e3a5f';
+const ORANGE = '#f97316';
+
+type MenuRowProps = {
+    label: string
+    onPress?: () => void
+    danger?: boolean
+}
+
+const MenuRow = ({ label, onPress, danger }: MenuRowProps) => (
+    <TouchableOpacity
+        onPress={onPress}
+        className="flex-row items-center bg-white border-b border-gray-100 px-4"
+        style={{ height: 56 }}
+        activeOpacity={0.6}
+    >
+        <Text
+            className="flex-1 text-base font-semibold"
+            style={{ color: danger ? ORANGE : NAVY }}
+        >
+            {label}
+        </Text>
+        {!danger && (
+            <Text className="text-gray-300 text-lg">›</Text>
+        )}
+    </TouchableOpacity>
+)
 
 const Profile = () => {
     return (
-        <SafeAreaProvider>
-            <View className='flex-1 items-center pt-20 '>
-                <Text className='text-4xl font-bold p-[20px]'>Profile</Text>
-                <Image source={icons.userDefault} style={styles.image}/>
-                <Image source={icons.swapImage} className='absolute top-[255px] right-[135px] w-8 h-8'/>
-                <View>
-                    <TouchableOpacity
-                        className="bg-blue-600 px-[20px] py-[20px] rounded-2xl p-10"
-                        onPress={() => {
-                            console.log('You tapped the button!');
-                        }}>
-                        <Text className="text-white font-semibold text-lg">Transaction History</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className="bg-blue-600 px-8 py-4 rounded-2xl"
-                        onPress={() => {
-                            console.log('You tapped the button!');
-                        }}>
-                        <Text className="text-white font-semibold text-lg">Saved Listing</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className="bg-blue-600 px-8 py-4 rounded-2xl"
-                        onPress={() => {
-                            console.log('You tapped the button!');
-                        }}>
-                        <Text className="text-white font-semibold text-lg">Settings</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => router.push('/login')}
-                        className="bg-blue-600 px-8 py-4 rounded-2xl"
-                    >
-                        <Text className="text-white font-semibold text-lg">Log Out</Text>
-                    </TouchableOpacity>
-                    </View>
+        <View className="flex-1 bg-white">
+            {/* Header */}
+            <View className="px-4 pt-14 pb-4">
+                <Text className="text-5xl font-bold" style={{ color: NAVY }}>Profile</Text>
             </View>
-        </SafeAreaProvider>
+
+            <ScrollView>
+                {/* Avatar section */}
+                <View className="items-center py-8">
+                    <View>
+                        <Image
+                            source={icons.userDefault}
+                            style={{ width: 96, height: 96, borderRadius: 48 }}
+                        />
+                        <TouchableOpacity
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                right: 0,
+                                backgroundColor: ORANGE,
+                                borderRadius: 12,
+                                padding: 4,
+                            }}
+                            onPress={() => console.log('change photo')}
+                        >
+                            <Image
+                                source={icons.swapImage}
+                                style={{ width: 16, height: 16, tintColor: 'white' }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <Text className="mt-3 text-xl font-bold" style={{ color: NAVY }}>Your Name</Text>
+                    <Text className="text-sm text-gray-400">your@email.edu</Text>
+                </View>
+
+                {/* Menu items */}
+                <View className="border-t border-gray-100">
+                    <MenuRow label="Transaction History" onPress={() => console.log('Transaction History')} />
+                    <MenuRow label="Saved Listings" onPress={() => console.log('Saved Listings')} />
+                    <MenuRow label="Settings" onPress={() => console.log('Settings')} />
+                </View>
+
+                <View className="border-t border-gray-100 mt-6">
+                    <MenuRow label="Log Out" onPress={() => router.push('/login')} danger />
+                </View>
+            </ScrollView>
+        </View>
     )
 }
+
 export default Profile
-
-const styles = StyleSheet.create({
-    image: {
-        width: 100,
-        height:100,
-        marginVertical: 40, // pixels of padding on top and bottom
-    },
-    swapImage: {
-        width: 25,
-        height: 25,
-    }
-})
-
