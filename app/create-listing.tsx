@@ -14,7 +14,7 @@ export default function Listing() {
     };
 
     const handleRemovePhoto = (index: number) => {
-        const updated = [...photos]; // ... copies the origional instead of referencing it
+        const updated = [...photos]; // ... copies the original instead of referencing it
         updated[index] = null;
         setPhotos(updated);
     };
@@ -94,7 +94,9 @@ export default function Listing() {
                 <Text style={styles.sectionLabel}>Description</Text>
                 <TextInput
                     style={[styles.input, styles.descriptionInput]}
-                    placeholder="Describe your item — condition, dimensions, etc."
+
+                    placeholder="Describe your item"
+
                     placeholderTextColor="#9ca3af"
                     value={description}
                     onChangeText={setDescription}

@@ -30,7 +30,7 @@ const MenuRow = ({ label, onPress, danger }: MenuRowProps) => (
     </TouchableOpacity>
 )
 
-const Profile = () => {
+export default function Profile(){
     return (
         <View className="flex-1 bg-white">
             {/* Header */}
@@ -63,8 +63,10 @@ const Profile = () => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <Text className="mt-3 text-xl font-bold" style={{ color: NAVY }}>Your Name</Text>
-                    <Text className="text-sm text-gray-400">your@email.edu</Text>
+
+                    <Text className="mt-3 text-xl font-bold" style={{ color: NAVY }}>User Name</Text>
+                    <Text className="text-sm text-gray-400">name@email.edu</Text>
+
                 </View>
 
                 {/* Menu items */}
@@ -82,4 +84,3 @@ const Profile = () => {
     )
 }
 
-export default Profile

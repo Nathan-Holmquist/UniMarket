@@ -24,9 +24,10 @@ interface Listing {
 }
 
 const ListingTile = ({ item }: { item: Listing }) => (
-    <View
+    <Pressable
         style={{ width: TILE_SIZE, height: TILE_SIZE }}
-        className="rounded-2xl overflow-hidden"
+        className="rounded-2xl overflow-hidden active:opacity-80"
+        onPress={() => router.push('/listing')}
     >
         <ImageBackground
             source={{ uri: item.image }}
@@ -39,7 +40,7 @@ const ListingTile = ({ item }: { item: Listing }) => (
                 <Text className="text-orange-300 font-bold text-sm">{item.price}</Text>
             </View>
         </ImageBackground>
-    </View>
+    </Pressable>
 );
 
 

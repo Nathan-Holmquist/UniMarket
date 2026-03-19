@@ -2,16 +2,22 @@ require("dotenv").config();
 const express = require("express");
 const sql = require("mssql");
 
+
 const app = express();
 app.use(express.json()); // parse JSON bodies
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_SERVER:', process.env.DB_SERVER);
+console.log('DB_DATABASE:', process.env.DB_DATABASE);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_PORT:', process.env.DB_PORT);
 
-// These will be removed in the future this is essentially using our .env file which is for testing before full migration to azure and its appservices, aka this is LOCAL validatioon and we would not want these bits of informatiuon getting out to the public
+// These will be removed in the future this is essentially using our ..env file which is for testing before full migration to azure and its appservices, aka this is LOCAL validatioon and we would not want these bits of informatiuon getting out to the public
 const dbConfig = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     server: process.env.DB_SERVER,
-    database: process.env.DB_NAME,
-    port: 1433,
+    database: process.env.DB_DATABASE,
+    port: parseInt(process.env.DB_PORT),
     options: {
         encrypt: true,
         trustServerCertificate: false
@@ -22,6 +28,7 @@ const dbConfig = {
 app.get("/", (req, res) => {
     res.send("Backend is running!");
 });
+
 
 // IN node.js they are called signal but in FLASK this is a POST
 app.post("/signal", async (req, res) => {
@@ -50,5 +57,5 @@ app.post("/signal", async (req, res) => {
 });
 
 // Start server
-const port = process.env.PORT || 3000;
+const port = dbConfig.port || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
