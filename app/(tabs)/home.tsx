@@ -1,5 +1,6 @@
 import { Text, View, Image, Pressable, ImageBackground, Dimensions, ScrollView } from 'react-native';
 import { icons } from '@/constants/icons';
+import {router} from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const TILE_SIZE = (SCREEN_WIDTH - 48) / 2; // 16px padding on each side + 16px gap
@@ -41,11 +42,14 @@ const ListingTile = ({ item }: { item: Listing }) => (
     </View>
 );
 
+
+
 export default function Home() {
     const rows: Listing[][] = [];
     for (let i = 0; i < data.length; i += 2) {
         rows.push(data.slice(i, i + 2));
     }
+
 
     return (
         <View className="flex-1 bg-white">
