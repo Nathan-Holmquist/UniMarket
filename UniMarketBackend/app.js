@@ -11,6 +11,7 @@ console.log('DB_DATABASE:', process.env.DB_DATABASE);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 console.log('DB_PORT:', process.env.DB_PORT);
 
+
 // These will be removed in the future this is essentially using our ..env file which is for testing before full migration to azure and its appservices, aka this is LOCAL validatioon and we would not want these bits of informatiuon getting out to the public
 const dbConfig = {
     user: process.env.DB_USER,
@@ -27,6 +28,20 @@ const dbConfig = {
 // Test endpoint
 app.get("/", (req, res) => {
     res.send("Backend is running!");
+});
+
+// GET all listings
+app.get("/listings", async (req, res) => {
+    try {
+        await sql.connect(dbConfig);
+        const result = await sql.query`SELECT id, title, price, ImageURL FROM Listing`;
+        res.json(result.recordset); // sends back an array of row objects
+    } catch (err) {
+        console.error("SQL Error:", err);
+        res.status(500).json({ error: err.message });
+    } finally {
+        await sql.close();
+    }
 });
 
 
@@ -56,6 +71,6 @@ app.post("/signal", async (req, res) => {
     }
 });
 
-// Start server
-const port = dbConfig.port || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// Start server (HTTP port is separate from the DB port)
+const httpPort = process.env.PORT || 3000;
+app.listen(httpPort, () => console.log(`Server running on port ${httpPort}`));
