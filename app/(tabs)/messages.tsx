@@ -1,5 +1,6 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
+import { router } from 'expo-router'
 import { icons } from "@/constants/icons"
 
 // All data we need to pull from database
@@ -73,7 +74,7 @@ const Messages = () => {
                         lastMessage={convo.lastMessage}
                         date={convo.date}
                         profilePic={convo.profilePic}
-                        onPress={() => console.log(`pressed ${convo.name}'s conversation`)}
+                        onPress={() => router.push({ pathname: '/conversation', params: { id: convo.id, name: convo.name } })}
                     />
                 ))}
             </ScrollView>
