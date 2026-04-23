@@ -9,7 +9,8 @@ export default function Listing() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-
+    const [loading, setLoading] = useState(false);
+    const API_URL = 'http://192.168.1.188:3000';
     const handleAddPhoto = (index: number) => {
         Alert.alert('Add Photo', '', [
             {
@@ -66,8 +67,58 @@ export default function Listing() {
         setPhotos(updated);
     };
 
-    const handleListItem = () => {
-        // Push all data to DB
+    const handleListItem = async () => {
+        if (!name.trim()) {
+            Alert.alert('Missing field', 'Please enter an item name.');
+            return;
+        }
+        if (!price.trim()) {
+            Alert.alert('Missing field', 'Please enter a price.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append('title', name.trim());
+            formData.append('price', price.trim());
+            if (description.trim()) {
+                formData.append('description', description.trim());
+            }
+
+            const imageKeys = ['image1', 'image2', 'image3', 'image4'];
+            photos.forEach((photo, index) => {
+                if (photo) {
+                    formData.append(imageKeys[index], {
+                        uri: photo,
+                        type: 'image/jpeg',
+                        name: `photo${index + 1}.jpg`,
+                    } as any);
+                }
+            });
+
+            const response = await fetch(`${API_URL}/listings`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                let message = 'Failed to create listing';
+                try {
+                    const errorData = await response.json();
+                    message = errorData.error || message;
+                } catch {}
+                throw new Error(message);
+            }
+
+            Alert.alert('Success', 'Your listing has been created!', [
+                { text: 'OK', onPress: () => router.back() },
+            ]);
+        } catch (err: any) {
+            Alert.alert('Error', err.message || 'Something went wrong. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -153,8 +204,8 @@ export default function Listing() {
                 />
 
                 {/* Submit */}
-                <Pressable style={styles.listBtn} onPress={handleListItem}>
-                    <Text style={styles.listBtnText}>List Item</Text>
+                <Pressable style={[styles.listBtn, loading && { opacity: 0.6 }]} onPress={handleListItem} disabled={loading}>
+                    <Text style={styles.listBtnText}>{loading ? 'Uploading...' : 'List Item'}</Text>
                 </Pressable>
             </ScrollView>
         </View>

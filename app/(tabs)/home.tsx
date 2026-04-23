@@ -6,7 +6,7 @@ import {router} from "expo-router";
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const TILE_SIZE = (SCREEN_WIDTH - 48) / 2; // 16px padding on each side + 16px gap
 
-const API_URL = 'http://10.80.51.76:3000';
+const API_URL = 'http://192.168.1.188:3000';
 
 interface Listing {
     Id: string;
@@ -19,7 +19,7 @@ const ListingTile = ({ item }: { item: Listing }) => (
     <Pressable
         style={{ width: TILE_SIZE, height: TILE_SIZE }}
         className="rounded-2xl overflow-hidden active:opacity-80"
-        onPress={() => router.push('/listing')}
+        onPress={() => router.push({ pathname: '/listing', params: { id: item.Id } })}
     >
         <ImageBackground
             source={{ uri: item.ImageUrl }}
@@ -94,7 +94,7 @@ export default function Home() {
                 <ActivityIndicator size="large" color="#f97316" style={{ marginTop: 40 }} />
             ) : (
                 <ScrollView
-                    contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24, gap: 16 }}
+                    contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16, paddingBottom: 24, gap: 16 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#f97316" />}
                 >
                     {rows.map((row, rowIndex) => (

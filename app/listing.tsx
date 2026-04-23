@@ -1,29 +1,47 @@
-import { useState, useRef } from 'react';
-import { View, Text, Image, Pressable, ScrollView, TextInput, StyleSheet, Dimensions, Modal } from 'react-native';
-import { router } from 'expo-router';
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, Image, Pressable, ScrollView, TextInput, StyleSheet, Dimensions, Modal, ActivityIndicator } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 import { icons } from '@/constants/icons';
 
-const SCREEN_WIDTH = Dimensions.get('window').width; // Needed for the image carousel
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const API_URL = 'http://192.168.1.188:3000';
 
-const listing = {
-    title: 'Title',
-    price: '$850',
-    description: 'Description',
-    images: [
-        // Href to Images, (list)
-    ],
-    seller: 'Seller',
-};
+interface ListingDetail {
+    Id: string;
+    Title: string;
+    Description: string | null;
+    Price: string;
+    imageURL1: string | null;
+    imageURL2: string | null;
+    imageURL3: string | null;
+    imageURL4: string | null;
+}
 
 export default function ListingPage() {
+    const { id } = useLocalSearchParams<{ id: string }>();
+    const [listing, setListing] = useState<ListingDetail | null>(null);
+    const [loading, setLoading] = useState(true);
     const [imageIndex, setImageIndex] = useState(0);
     const [message, setMessage] = useState('');
     const [menuVisible, setMenuVisible] = useState(false);
     const [saved, setSaved] = useState(false);
     const scrollRef = useRef<ScrollView>(null);
 
+    useEffect(() => {
+        if (!id) return;
+        fetch(`${API_URL}/listings/${id}`)
+            .then(res => res.json())
+            .then(data => setListing(data))
+            .catch(err => console.error('Failed to fetch listing:', err))
+            .finally(() => setLoading(false));
+    }, [id]);
+
+    const images = listing
+        ? [listing.imageURL1, listing.imageURL2, listing.imageURL3, listing.imageURL4].filter(Boolean) as string[]
+        : [];
+
     const goToImage = (index: number) => {
-        const clamped = Math.max(0, Math.min(index, listing.images.length - 1));
+        const clamped = Math.max(0, Math.min(index, images.length - 1));
         setImageIndex(clamped);
         scrollRef.current?.scrollTo({ x: clamped * SCREEN_WIDTH, animated: true });
     };
@@ -52,73 +70,93 @@ export default function ListingPage() {
                 </View>
             </View>
 
-            <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-                <View style={styles.carouselContainer}>
-                    <ScrollView
-                        ref={scrollRef}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        scrollEventThrottle={16}
-                        onMomentumScrollEnd={(e) => {
-                            const index = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);
-                            setImageIndex(index);
-                        }}
-                    >
-                        {listing.images.map((uri, i) => (
-                            <Image key={i} source={{ uri }} style={styles.carouselImage} resizeMode="cover" />
-                        ))}
-                    </ScrollView>
+            {loading ? (
+                <ActivityIndicator size="large" color="#f97316" style={{ marginTop: 40 }} />
+            ) : !listing ? (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>Listing not found.</Text>
+                </View>
+            ) : (
+                <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+                    <View style={styles.carouselContainer}>
+                        {images.length > 0 ? (
+                            <>
+                                <ScrollView
+                                    ref={scrollRef}
+                                    horizontal
+                                    pagingEnabled
+                                    showsHorizontalScrollIndicator={false}
+                                    scrollEventThrottle={16}
+                                    onMomentumScrollEnd={(e) => {
+                                        const index = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+                                        setImageIndex(index);
+                                    }}
+                                >
+                                    {images.map((uri, i) => (
+                                        <Image key={i} source={{ uri }} style={styles.carouselImage} resizeMode="cover" />
+                                    ))}
+                                </ScrollView>
 
-                    {imageIndex > 0 && (
-                        <Pressable style={[styles.arrowBtn, styles.arrowLeft]} onPress={() => goToImage(imageIndex - 1)}>
-                            <Text style={styles.arrowText}>‹</Text>
+                                {imageIndex > 0 && (
+                                    <Pressable style={[styles.arrowBtn, styles.arrowLeft]} onPress={() => goToImage(imageIndex - 1)}>
+                                        <Text style={styles.arrowText}>‹</Text>
+                                    </Pressable>
+                                )}
+                                {imageIndex < images.length - 1 && (
+                                    <Pressable style={[styles.arrowBtn, styles.arrowRight]} onPress={() => goToImage(imageIndex + 1)}>
+                                        <Text style={styles.arrowText}>›</Text>
+                                    </Pressable>
+                                )}
+
+                                {images.length > 1 && (
+                                    <View style={styles.dotsRow}>
+                                        {images.map((_, i) => (
+                                            <Pressable key={i} onPress={() => goToImage(i)}>
+                                                <View style={[styles.dot, i === imageIndex && styles.dotActive]} />
+                                            </Pressable>
+                                        ))}
+                                    </View>
+                                )}
+                            </>
+                        ) : (
+                            <View style={styles.noImagePlaceholder}>
+                                <Text style={styles.noImageText}>No images</Text>
+                            </View>
+                        )}
+                    </View>
+
+                    <View style={styles.titleRow}>
+                        <Text style={styles.title} numberOfLines={2}>{listing.Title}</Text>
+                        <Text style={styles.price}>${listing.Price}</Text>
+                    </View>
+
+                    {listing.Description ? (
+                        <>
+                            <Text style={styles.sectionLabel}>Description</Text>
+                            <Text style={styles.description}>{listing.Description}</Text>
+                        </>
+                    ) : null}
+
+                    <Text style={styles.sectionLabel}>Message seller</Text>
+                    <View style={styles.messageRow}>
+                        <TextInput
+                            style={styles.messageInput}
+                            placeholder="Ask a question…"
+                            placeholderTextColor="#9ca3af"
+                            value={message}
+                            onChangeText={setMessage}
+                            multiline
+                        />
+                        <Pressable
+                            style={[styles.sendBtn, !message.trim() && styles.sendBtnDisabled]}
+                            onPress={handleSend}
+                            disabled={!message.trim()}
+                        >
+                            <Text style={styles.sendBtnText}>Send</Text>
                         </Pressable>
-                    )}
-                    {imageIndex < listing.images.length - 1 && (
-                        <Pressable style={[styles.arrowBtn, styles.arrowRight]} onPress={() => goToImage(imageIndex + 1)}>
-                            <Text style={styles.arrowText}>›</Text>
-                        </Pressable>
-                    )}
-
-                    {listing.images.length > 1 && (
-                        <View style={styles.dotsRow}>
-                            {listing.images.map((_, i) => (
-                                <Pressable key={i} onPress={() => goToImage(i)}>
-                                    <View style={[styles.dot, i === imageIndex && styles.dotActive]} />
-                                </Pressable>
-                            ))}
-                        </View>
-                    )}
-                </View>
-
-                <View style={styles.titleRow}>
-                    <Text style={styles.title} numberOfLines={2}>{listing.title}</Text>
-                    <Text style={styles.price}>{listing.price}</Text>
-                </View>
-
-                <Text style={styles.sectionLabel}>Description</Text>
-                <Text style={styles.description}>{listing.description}</Text>
-
-                <Text style={styles.sectionLabel}>Message seller</Text>
-                <View style={styles.messageRow}>
-                    <TextInput
-                        style={styles.messageInput}
-                        placeholder={`Ask ${listing.seller} a question…`}
-                        placeholderTextColor="#9ca3af"
-                        value={message}
-                        onChangeText={setMessage}
-                        multiline
-                    />
-                    <Pressable
-                        style={[styles.sendBtn, !message.trim() && styles.sendBtnDisabled]}
-                        onPress={handleSend}
-                        disabled={!message.trim()}
-                    >
-                        <Text style={styles.sendBtnText}>Send</Text>
-                    </Pressable>
-                </View>
-            </ScrollView>
+                    </View>
+                </ScrollView>
+            )}
 
             <Modal
                 visible={menuVisible}
@@ -180,7 +218,6 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingBottom: 48,
     },
-    // Carousel
     carouselContainer: {
         width: SCREEN_WIDTH,
         height: SCREEN_WIDTH * 0.75,
@@ -189,6 +226,15 @@ const styles = StyleSheet.create({
     carouselImage: {
         width: SCREEN_WIDTH,
         height: SCREEN_WIDTH * 0.75,
+    },
+    noImagePlaceholder: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    noImageText: {
+        color: '#9ca3af',
+        fontSize: 15,
     },
     arrowBtn: {
         position: 'absolute',
@@ -231,7 +277,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f97316',
         width: 18,
     },
-    // Title & Price
     titleRow: {
         flexDirection: 'row',
         alignItems: 'flex-start',
@@ -266,7 +311,6 @@ const styles = StyleSheet.create({
         lineHeight: 22,
         paddingHorizontal: 20,
     },
-    // Message
     messageRow: {
         flexDirection: 'row',
         alignItems: 'flex-end',
@@ -301,7 +345,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '700',
     },
-    // Dropdown
     modalOverlay: {
         flex: 1,
     },
@@ -336,5 +379,14 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '600',
         color: '#1e3a5f',
+    },
+    errorContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#6b7280',
     },
 });
