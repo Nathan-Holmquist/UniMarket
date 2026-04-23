@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, Image, StyleSheet} from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, Image, StyleSheet, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { icons } from '@/constants/icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,7 +10,39 @@ export default function Listing() {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
 
-    const handleAddPhoto = async (index: number) => {
+    const handleAddPhoto = (index: number) => {
+        Alert.alert('Add Photo', '', [
+            {
+                text: 'Take Photo',
+                onPress: () => handleTakePhoto(index),
+            },
+            {
+                text: 'Choose from Library',
+                onPress: () => handlePickFromLibrary(index),
+            },
+            { text: 'Cancel', style: 'cancel' },
+        ]);
+    };
+
+    const handleTakePhoto = async (index: number) => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') return;
+
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.8,
+        });
+
+        if (!result.canceled && result.assets[0]) {
+            const updated = [...photos];
+            updated[index] = result.assets[0].uri;
+            setPhotos(updated);
+        }
+    };
+
+    const handlePickFromLibrary = async (index: number) => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') return;
 
