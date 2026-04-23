@@ -15,24 +15,26 @@ import { icons } from '@/constants/icons';
 
 
 type Message = {
-    id: string
-    text: string
-    fromMe: boolean
-    time: string
+    conversation_listing_id: string
+    buyer_id: string
+    seller_id: string
+    content: string
+    created_at: string
+    is_read: boolean
 }
 
 
 const sampleMessages: Record<string, Message[]> = {
-    '1': [{ id: '4', text: 'This is a test', fromMe: false, time: 'Today' },],
-    '2': [{ id: '3', text: 'This is a test', fromMe: false, time: 'Yesterday' },],
-    '3': [{ id: '1', text: 'This is a test', fromMe: false, time: 'Mon' },],
-    '4': [{ id: '1', text: 'This is a test', fromMe: false, time: 'Sun' },],
-    '5': [{ id: '1', text: 'This is a test', fromMe: false, time: 'Fri' },],
+    '1': [{ conversation_listing_id: '1', buyer_id: 'other', seller_id: 'me', content: 'This is a test', created_at: 'Today', is_read: true }],
+    '2': [{ conversation_listing_id: '2', buyer_id: 'other', seller_id: 'me', content: 'This is a test', created_at: 'Yesterday', is_read: true }],
+    '3': [{ conversation_listing_id: '3', buyer_id: 'other', seller_id: 'me', content: 'This is a test', created_at: 'Mon', is_read: true }],
+    '4': [{ conversation_listing_id: '4', buyer_id: 'other', seller_id: 'me', content: 'This is a test', created_at: 'Sun', is_read: true }],
+    '5': [{ conversation_listing_id: '5', buyer_id: 'other', seller_id: 'me', content: 'This is a test', created_at: 'Fri', is_read: true }],
 }
 
 
 export default function ConversationScreen() {
-    const { id, name, profilePic } = useLocalSearchParams<{ id: string; name: string; profilePic?: string }>()
+    const { id, name, profilePic, myId } = useLocalSearchParams<{ id: string; name: string; profilePic?: string; myId?: string }>()
     const [messages, setMessages] = useState<Message[]>(sampleMessages[id] ?? [])
     const [input, setInput] = useState('')
     const listRef = useRef<FlatList>(null)
@@ -51,7 +53,14 @@ export default function ConversationScreen() {
         if (!text) return
         const now = new Date()
         const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        setMessages(prev => [...prev, { id: String(Date.now()), text, fromMe: true, time }])
+        setMessages(prev => [...prev, {
+            conversation_listing_id: id,
+            buyer_id: myId ?? 'me',
+            seller_id: '',
+            content: text,
+            created_at: time,
+            is_read: false,
+        }])
         setInput('')
         setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 50)
     }
@@ -84,24 +93,25 @@ export default function ConversationScreen() {
             <FlatList
                 ref={listRef}
                 data={messages}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => `${item.created_at}-${index}`}
                 contentContainerStyle={styles.messageList}
                 onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })}
                 renderItem={({ item, index }) => {
+                    const fromMe = item.buyer_id === (myId ?? 'me')
                     const prevMsg = messages[index - 1]
-                    const showTime = !prevMsg || prevMsg.time !== item.time
+                    const showTime = !prevMsg || prevMsg.created_at !== item.created_at
                     return (
                         <View>
                             {showTime && (
-                                <Text style={styles.timeLabel}>{item.time}</Text>
+                                <Text style={styles.timeLabel}>{item.created_at}</Text>
                             )}
-                            <View style={[styles.bubbleRow, item.fromMe ? styles.bubbleRowMe : styles.bubbleRowThem]}>
-                                {!item.fromMe && (
+                            <View style={[styles.bubbleRow, fromMe ? styles.bubbleRowMe : styles.bubbleRowThem]}>
+                                {!fromMe && (
                                     <Image source={icons.userDefault} style={styles.bubbleAvatar} />
                                 )}
-                                <View style={[styles.bubble, item.fromMe ? styles.bubbleMe : styles.bubbleThem]}>
-                                    <Text style={[styles.bubbleText, item.fromMe ? styles.bubbleTextMe : styles.bubbleTextThem]}>
-                                        {item.text}
+                                <View style={[styles.bubble, fromMe ? styles.bubbleMe : styles.bubbleThem]}>
+                                    <Text style={[styles.bubbleText, fromMe ? styles.bubbleTextMe : styles.bubbleTextThem]}>
+                                        {item.content}
                                     </Text>
                                 </View>
                             </View>

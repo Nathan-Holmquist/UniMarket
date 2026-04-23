@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Text, View, Image, Pressable, ImageBackground, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { Text, View, Image, Pressable, ImageBackground, Dimensions, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { icons } from '@/constants/icons';
 import {router} from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const TILE_SIZE = (SCREEN_WIDTH - 48) / 2; // 16px padding on each side + 16px gap
 
-const API_URL = 'http://10.80.53.99:3000';
+const API_URL = 'http://10.80.51.76:3000';
 
 interface Listing {
     Id: string;
@@ -40,14 +40,27 @@ const ListingTile = ({ item }: { item: Listing }) => (
 export default function Home() {
     const [listings, setListings] = useState<Listing[]>([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchListings = useCallback(async () => {
+        try {
+            const res = await fetch(`${API_URL}/listings`);
+            const data = await res.json();
+            setListings(data);
+        } catch (err) {
+            console.error('Failed to fetch listings:', err);
+        }
+    }, []);
 
     useEffect(() => {
-        fetch(`${API_URL}/listings`)
-            .then(res => res.json())
-            .then(data => setListings(data))
-            .catch(err => console.error('Failed to fetch listings:', err))
-            .finally(() => setLoading(false));
-    }, []);
+        fetchListings().finally(() => setLoading(false));
+    }, [fetchListings]);
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        await fetchListings();
+        setRefreshing(false);
+    }, [fetchListings]);
 
     const rows: Listing[][] = [];
     for (let i = 0; i < listings.length; i += 2) {
@@ -80,7 +93,10 @@ export default function Home() {
             {loading ? (
                 <ActivityIndicator size="large" color="#f97316" style={{ marginTop: 40 }} />
             ) : (
-                <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24, gap: 16 }}>
+                <ScrollView
+                    contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24, gap: 16 }}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#f97316" />}
+                >
                     {rows.map((row, rowIndex) => (
                         <View key={rowIndex} className="flex-row" style={{ gap: 16 }}>
                             {row.map((item) => (

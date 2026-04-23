@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, Image, StyleSheet} from 'react-native';
 import { router } from 'expo-router';
 import { icons } from '@/constants/icons';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Listing() {
     const [photos, setPhotos] = useState<(string | null)[]>([null, null, null, null]);
@@ -9,8 +10,22 @@ export default function Listing() {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
 
-    const handleAddPhoto = (index: number) => {
-        // placeholder — photo picker would go here
+    const handleAddPhoto = async (index: number) => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') return;
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.8,
+        });
+
+        if (!result.canceled && result.assets[0]) {
+            const updated = [...photos];
+            updated[index] = result.assets[0].uri;
+            setPhotos(updated);
+        }
     };
 
     const handleRemovePhoto = (index: number) => {
